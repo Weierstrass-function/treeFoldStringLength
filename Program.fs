@@ -40,12 +40,6 @@ let rec tree_init (keys, node) =
 //        (String.length key) + tree_getTotalLen left + tree_getTotalLen right
 //    | Empty -> 0
 
-let rec myFold f acc node =
-    match node with
-    | Node(key, left, right) ->
-        f (f key (myFold f acc left)) (myFold f acc right)
-    | Empty -> acc
-
 //let rec myFold f acc node =
 //    match node with
 //    | Node(key, left, right) ->
@@ -68,14 +62,14 @@ let tree_getTotalLen node =
             Node(func key, my_map func left, my_map func right)
         | Empty -> Empty
 
-    let Len x = 
-        String.length x
+    let rec myFold f acc node =
+        match node with
+        | Node(key, left, right) ->
+            f (f key (myFold f acc left)) (myFold f acc right)
+        | Empty -> acc
 
-    let Sum a b = 
-        a + b
-
-    let LenTree = my_map Len node
-    myFold Sum 0 LenTree
+    let LenTree = my_map (String.length) node
+    myFold (+) 0 LenTree
 
 // Парсинг с выводом ошибок -----------------------------
 let parseFloat s =
